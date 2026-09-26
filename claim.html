@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open your mail — U GOT MAIL</title>
+  <meta name="theme-color" content="#F6F0E2">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="/">
+      <img src="/assets/ugotmail.jpg" alt="" width="44" height="44">
+      <span>U GOT MAIL</span>
+    </a>
+    <span class="progress" id="progress" aria-live="polite"></span>
+  </nav>
+
+  <main class="claim">
+    <div class="claim-art">
+      <img src="/assets/ugotmail.jpg" alt="An airmail envelope with a stamp, addressed U GOT MAIL" width="500" height="500">
+      <h1 id="headline">Opening your mail…</h1>
+      <p class="note" id="note" hidden></p>
+      <div class="sealed" id="sealed" hidden><span id="sealed-label">Sealed inside</span><span class="amount-text"></span></div>
+    </div>
+
+    <div class="glow-frame">
+      <div class="card claim-card">
+
+        <!-- Loading / problems -->
+        <div id="message" class="center">
+          <h2 id="message-title">Loading…</h2>
+          <p id="message-body"></p>
+          <a class="btn-ghost" id="message-link" href="/" hidden>Go to U GOT MAIL</a>
+        </div>
+
+        <!-- Step 1a: ask for code -->
+        <div id="ask" hidden>
+          <h2>First, prove it's your inbox.</h2>
+          <p>We'll email a 6-digit code to <strong class="to-text"></strong>.</p>
+          <div class="alert" id="ask-error" role="alert" hidden></div>
+          <button class="btn-primary" type="button" id="send-code">Email me a code</button>
+        </div>
+
+        <!-- Step 1b: enter code -->
+        <form id="verify" novalidate hidden>
+          <h2>Check your inbox.</h2>
+          <p>We sent a 6-digit code to <strong class="to-text"></strong>. It expires in 10 minutes.</p>
+          <div class="field">
+            <label for="code">One-time code</label>
+            <input class="input code" id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+          </div>
+          <div class="alert" id="verify-error" role="alert" hidden></div>
+          <button class="btn-primary" type="submit" id="verify-btn">Break the seal</button>
+          <button class="resend" type="button" id="resend">Send a new code</button>
+        </form>
+
+        <!-- Step 2: choose destination -->
+        <form id="claim" novalidate hidden tabindex="-1">
+          <h2>It's yours. Where should it go?</h2>
+          <div class="dests" role="group" aria-label="Where to send it">
+            <button type="button" class="dest" data-dest="wallet" aria-pressed="true"><strong>My wallet</strong><span>Send it to a Solana address I already have.</span></button>
+            <button type="button" class="dest" data-dest="new" aria-pressed="false"><strong>Create a wallet</strong><span>Make a new one right here in my browser.</span></button>
+          </div>
+
+          <div id="dest-wallet">
+            <div class="field">
+              <label for="addr">Your Solana wallet address</label>
+              <input class="input mono" id="addr" type="text" autocomplete="off" spellcheck="false" placeholder="Paste your address">
+            </div>
+            <button type="button" class="btn-small spaced" id="use-connected" hidden>Use my connected wallet</button>
+          </div>
+
+          <div id="dest-new" hidden>
+            <p class="small">This is your new wallet's private key. Anyone who has it controls the funds, and nobody — including us — can recover it. Save it, then import it into Phantom or Solflare (Add account → Import private key).</p>
+            <div class="secret">
+              <div class="secret-label">Address</div>
+              <div class="mono" id="new-address"></div>
+              <div class="secret-label">Private key</div>
+              <div class="mono secret-key" id="new-secret"></div>
+            </div>
+            <div class="row left">
+              <button type="button" class="btn-small" id="copy-secret">Copy private key</button>
+              <button type="button" class="btn-small" id="download-secret">Download as file</button>
+            </div>
+            <label class="check"><input type="checkbox" id="saved"> I saved my private key somewhere safe.</label>
+            <p class="small" id="spl-gas-note" hidden>Moving USDC or USDT out of this wallet later needs a little SOL in it for network fees.</p>
+          </div>
+
+          <div class="alert" id="claim-error" role="alert" hidden></div>
+          <button class="btn-primary" type="submit" id="claim-btn">Claim <span class="amount-text"></span></button>
+          <p class="status-line" id="claim-progress" aria-live="polite"></p>
+        </form>
+
+        <!-- Step 3: done -->
+        <div class="done" id="done" hidden tabindex="-1">
+          <h2>Claimed.</h2>
+          <p id="done-msg"></p>
+          <div class="row">
+            <a class="btn-ghost" id="done-tx" href="#" target="_blank" rel="noopener">View on Solana</a>
+            <a class="btn-ghost" href="/">Send something back</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.4/lib/index.iife.min.js" defer></script>
+  <script src="/js/wallet.js" defer></script>
+  <script src="/js/claim.js" defer></script>
+</body>
+</html>

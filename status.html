@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Track your send — U GOT MAIL</title>
+  <meta name="theme-color" content="#F6F0E2">
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="/">
+      <img src="/assets/ugotmail.jpg" alt="" width="44" height="44">
+      <span>U GOT MAIL</span>
+    </a>
+    <a class="pill-outline" href="/#send">Send SOL</a>
+  </nav>
+
+  <main class="status-page">
+    <!-- One send -->
+    <section id="one" hidden>
+      <h1 class="h2">Your send</h1>
+      <div class="glow-frame">
+        <div class="card status-card">
+          <div class="status-head">
+            <div class="big-amount" id="s-amount"></div>
+            <span class="badge" id="s-badge"></span>
+          </div>
+          <dl class="facts">
+            <div><dt>To</dt><dd id="s-email"></dd></div>
+            <div><dt>From</dt><dd id="s-from"></dd></div>
+            <div><dt>Sent</dt><dd id="s-created"></dd></div>
+            <div id="s-expires-row"><dt>Returns to you</dt><dd id="s-expires"></dd></div>
+            <div><dt>Escrow</dt><dd><a id="s-escrow" href="#" target="_blank" rel="noopener"></a></dd></div>
+            <div id="s-tx-row" hidden><dt>Transfer</dt><dd><a id="s-tx" href="#" target="_blank" rel="noopener">View on Solana</a></dd></div>
+          </dl>
+          <p class="small" id="s-explain"></p>
+          <div class="alert" id="s-error" role="alert" hidden></div>
+          <button type="button" class="btn-cancel" id="cancel" hidden>Cancel and return it to my wallet</button>
+          <p class="status-line" id="s-progress" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent sends from this browser -->
+    <section id="list" hidden>
+      <h1 class="h2">Your sends</h1>
+      <p class="lede">Sends made from this browser. Open one to check on it or cancel it.</p>
+      <ul class="send-list" id="send-list"></ul>
+      <p id="empty" hidden>No sends from this browser yet. <a href="/#send">Send some SOL</a>.</p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.4/lib/index.iife.min.js" defer></script>
+  <script src="/js/wallet.js" defer></script>
+  <script src="/js/status.js" defer></script>
+</body>
+</html>

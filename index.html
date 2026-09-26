@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>U GOT MAIL — Send SOL to any inbox</title>
+  <meta name="description" content="Send SOL to anyone's email. Only the person who opens that inbox can claim it.">
+  <meta name="theme-color" content="#F6F0E2">
+  <meta property="og:title" content="U GOT MAIL — Send SOL to any inbox">
+  <meta property="og:description" content="No wallet address needed. Type an email, send the coins.">
+  <meta property="og:image" content="/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <a class="skip" href="#send">Skip to the send form</a>
+
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="/">
+      <img src="/assets/ugotmail.jpg" alt="" width="44" height="44">
+      <span>U GOT MAIL</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#security">Security</a>
+      <a href="#faq">FAQ</a>
+      <a href="/status">My sends</a>
+      <a class="pill-outline" href="/claim">Open my mail</a>
+    </div>
+  </nav>
+
+  <header class="banner">
+    <img src="/assets/ugotmailbanner.jpg" alt="An airmail envelope addressed U GOT MAIL" width="898" height="300" fetchpriority="high">
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <span class="envelope-tag" id="network-tag">SOLANA NETWORK | SOL · USDC · USDT</span>
+        <h1>Send SOL<br>to any inbox.</h1>
+        <p class="lede">No wallet address. Nothing for them to install. Type an email, send the coins — only the person who opens that inbox can claim them.</p>
+        <ul class="checks">
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#33468F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Cancel anytime before it's opened</li>
+          <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#33468F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Returns to you if unclaimed</li>
+        </ul>
+      </div>
+
+      <div class="glow-frame" id="send">
+        <div class="card">
+          <!-- Compose -->
+          <form id="compose" novalidate>
+            <div class="card-head">
+              <div>
+                <h2>Write a letter</h2>
+                <p>Crypto inside. Email on the front.</p>
+              </div>
+              <div class="addr" aria-hidden="true">TO: <span id="to-label">RECIPIENT@MAIL</span><br>FROM: <span id="from-label">YOU@SOL</span></div>
+            </div>
+
+            <div class="wallet-row">
+              <span id="wallet-status">No wallet connected</span>
+              <button type="button" class="btn-small" id="connect">Connect wallet</button>
+            </div>
+
+            <div class="field">
+              <label for="amount">Amount</label>
+              <input class="input amount" id="amount" name="amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00">
+              <div class="tokens" id="tokens" role="group" aria-label="Choose coin">
+                <button type="button" class="token" data-token="SOL" aria-pressed="true">SOL</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="email">To (their email)</label>
+              <input class="input" id="email" name="email" type="email" autocomplete="off" placeholder="friend@example.com">
+            </div>
+
+            <div class="field-pair">
+              <div class="field">
+                <label for="name">Your name <small>(shown to them)</small></label>
+                <input class="input" id="name" name="name" type="text" maxlength="40" autocomplete="name" placeholder="Jordan">
+              </div>
+              <div class="field">
+                <label for="note">Note <small>(optional)</small></label>
+                <input class="input" id="note" name="note" type="text" maxlength="280" placeholder="Happy birthday!">
+              </div>
+            </div>
+
+            <div class="alert" id="send-error" role="alert" hidden></div>
+
+            <div class="fee"><span>Network fees</span><span id="fee-text">about 0.00003 SOL</span></div>
+
+            <button type="submit" class="btn-primary" id="send-btn">
+              <span id="send-label">Connect wallet to send</span>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="status-line" id="send-progress" aria-live="polite"></p>
+          </form>
+
+          <!-- Sent -->
+          <div class="done" id="sent" hidden tabindex="-1">
+            <img src="/assets/ugotmail.jpg" alt="" width="170" height="170">
+            <h2>Sealed &amp; sent.</h2>
+            <div class="big" id="sent-amount"></div>
+            <p>is on its way to <strong id="sent-email"></strong>. We emailed them a claim link — only that inbox can open it.</p>
+            <p class="small">Keep your tracking link to check on it or cancel before it's opened. If it isn't claimed in <span class="return-days">30</span> days, it comes back to your wallet automatically.</p>
+            <div class="row">
+              <a class="btn-ghost" id="track-link" href="/status">Track or cancel</a>
+              <button type="button" class="btn-ghost" id="send-another">Send another</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="how">
+      <div class="wrap">
+        <div class="intro">
+          <h2 class="h2">Three steps.<br>Zero addresses.</h2>
+          <p>If you can send an email, you can send crypto. If you can read one, you can receive it.</p>
+        </div>
+        <ol class="steps">
+          <li class="step">
+            <div class="num">Step 1</div>
+            <h3>Pick an amount and an email.</h3>
+            <p>Connect your Solana wallet, choose the coin, type who it's for. Approve once in your wallet.</p>
+          </li>
+          <li class="step">
+            <div class="num">Step 2</div>
+            <h3>A fresh wallet, locked to that inbox.</h3>
+            <p>Your coins go into their own escrow wallet on Solana. They're released only to whoever proves they own the email.</p>
+          </li>
+          <li class="step">
+            <div class="num">Step 3</div>
+            <h3>U got mail. Tap, verify, claim.</h3>
+            <p>They confirm a one-time code, then send it to their wallet — or create a new one on the spot.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="security">
+      <div class="wrap security">
+        <img src="/assets/ugotmail.jpg" alt="An airmail envelope with a stamp, addressed U GOT MAIL" width="500" height="500" loading="lazy">
+        <div>
+          <h2 class="h2">Only the inbox can open it.</h2>
+          <p>Not a stranger who finds the link. The coins stay in escrow until the recipient proves the address is theirs with a code sent to it.</p>
+          <div class="points">
+            <div>
+              <h3>One send, one escrow</h3>
+              <p>Each letter gets its own Solana escrow wallet. You can watch it on the Solana explorer from your tracking page.</p>
+            </div>
+            <div>
+              <h3>No wallet? No problem</h3>
+              <p>Recipients can paste any Solana address, or create a fresh wallet right in their browser when they claim.</p>
+            </div>
+            <div>
+              <h3>Take it back</h3>
+              <p>Mistyped an email? Cancel any unopened send from its tracking page by signing with your wallet.</p>
+            </div>
+            <div>
+              <h3>Return to sender</h3>
+              <p>Unclaimed after <span class="return-days">30</span> days? It's returned to your wallet automatically.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="faq">
+      <div class="wrap faq">
+        <h2 class="h2">Questions, answered.</h2>
+        <div class="faq-list">
+          <details open>
+            <summary>Does the person need a crypto wallet?</summary>
+            <p>No. After they confirm their email, they can paste any Solana address or create a brand-new wallet in their browser. We show them the private key once so they can import it into Phantom or Solflare.</p>
+          </details>
+          <details>
+            <summary>What do I need to send?</summary>
+            <p>A Solana wallet in your browser — Phantom, Solflare or Backpack. On a phone, open this site inside your wallet app's browser.</p>
+          </details>
+          <details>
+            <summary>What if I type the wrong email?</summary>
+            <p>Open your tracking link and cancel. Any send that hasn't been claimed goes straight back to the wallet you sent from.</p>
+          </details>
+          <details>
+            <summary>What if they never open it?</summary>
+            <p>After <span class="return-days">30</span> days it's returned to your wallet automatically.</p>
+          </details>
+          <details>
+            <summary>What does it cost?</summary>
+            <p>There's no service fee. You pay Solana network fees, a fraction of a cent for SOL. USDC and USDT sends also set aside about 0.004 SOL to open token accounts; about half of that comes back to you when the send closes.</p>
+          </details>
+          <details>
+            <summary>Who can see the coins while they wait?</summary>
+            <p>The escrow is a normal Solana wallet, so anyone can see its balance on the explorer. Moving the coins needs the escrow key, which is encrypted on our servers and only used to release funds to the verified recipient or back to you.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-cta">
+      <p>Somebody's<br>got mail.</p>
+      <a class="btn-cta" href="#send">Send SOL now</a>
+    </div>
+    <div class="footer-meta">
+      <strong>U GOT MAIL</strong>
+      <span>Built on Solana. Crypto can lose value. Sends are final once claimed.</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.98.4/lib/index.iife.min.js" defer></script>
+  <script src="/js/wallet.js" defer></script>
+  <script src="/js/send.js" defer></script>
+</body>
+</html>

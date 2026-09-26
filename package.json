@@ -1,0 +1,24 @@
+{
+  "name": "ugotmail",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@solana/spl-token": "0.4.13",
+    "@solana/web3.js": "1.98.4",
+    "@upstash/redis": "1.35.3",
+    "bs58": "6.0.0",
+    "tweetnacl": "1.0.3"
+  },
+  "scripts": {
+    "test": "node test/flow.test.mjs"
+  },
+  "overrides": {
+    "rpc-websockets": {
+      "uuid": "11.1.1"
+    }
+  }
+}
